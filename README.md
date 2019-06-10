@@ -1,2 +1,2 @@
-SpringBoot整合shiro
-使用mybatis带权限的增删改查
+# SpringBoot整合shiro实现权限控制
+持久层使用mybatis
