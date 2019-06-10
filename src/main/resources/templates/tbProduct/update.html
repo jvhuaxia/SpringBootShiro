@@ -1,0 +1,105 @@
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>修改产品</title>
+</head>
+<body>
+<div class="padding20" style="margin: 10px">
+    <form class="layui-form" lay-filter="userForm">
+        <div class="layui-form-item">
+            <label class="layui-form-label">ID:</label>
+            <div class="layui-input-inline defaults">
+                <input style="width: 240px" type="text" value="" id="id" name="id" th:value="${product.id}"
+                       readonly="readonly"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">产品名称:</label>
+            <div class="layui-input-inline defaults">
+                <input style="width: 240px" type="text" value="" id="name" name="name"
+                       class="layui-input" th:value="${product.name}">
+            </div>
+        </div>
+        <div class="layui-form-item ">
+            <label class="layui-form-label">产品编号:</label>
+            <div class="layui-input-inline defaults">
+                <input style="width: 240px" type="text" value="" id="num" name="num"
+                       class="layui-input" th:value="${product.num}">
+            </div>
+        </div>
+        <div class="layui-form-item ">
+            <label class="layui-form-label">入库时间:</label>
+            <div class="layui-input-inline defaults">
+                <input style="width: 240px" type="text" id="upTime" value="" name="time"
+                       class="layui-input" th:value="${product.time}">
+            </div>
+        </div>
+        <div class="layui-form-item ">
+            <label class="layui-form-label">价格:</label>
+            <div class="layui-input-inline defaults">
+                <input style="width: 240px" type="text" id="price" value="" name="price"
+                       class="layui-input" th:value="${product.price}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="editProduct">修改</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+<script>
+
+    function checkRate(input) {
+        var re = /^[0-9]+.?[0-9]*$/; //判断字符串是否为数字 //判断正整数 /^[1-9]+[0-9]*]*$/
+        var nubmer = document.getElementById(input).value;
+
+        if (!re.test(nubmer)) {
+            document.getElementById(input).value = "";
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
+    layui.use(['table', 'laydate', 'form', 'layer'], function () {
+        var form = layui.form, layer = layui.layer, laydate = layui.laydate, table = layui.table;
+        laydate.render({
+            elem: '#upTime' //指定元素
+        });
+        form.render();
+        form.on('submit(editProduct)', function (e) {
+            var data = e.field;
+            if (true) {
+                $.ajax({
+                    type: 'post',
+                    url: 'tbProduct/update',
+                    data: data,
+                    beforeSend: function () {
+
+                    },
+                    success: function (e) {
+                        console.warn(e);
+                        if (e.status === 1) {
+                            layer.closeAll("page");
+                            table.reload('productTableReload');
+                        }
+                        layer.msg(e.msg);
+                    },
+                    error: function (e) {
+                        layer.alert('请求超时', {
+                            skin: 'layui-layer-molv'
+                            , closeBtn: 0
+                        });
+                    }
+                });
+            } else {
+                layer.msg('价格请输入数字');
+            }
+            return false
+        })
+    })
+</script>
+</html>

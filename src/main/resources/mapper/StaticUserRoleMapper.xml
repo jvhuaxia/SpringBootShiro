@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo62.mapper.StaticUserRoleMapper">
+    <resultMap id="BaseResultMap" type="com.example.demo62.pojo.StaticUserRole">
+        <id column="user_role_id" jdbcType="INTEGER" property="userRoleId"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="role_id" jdbcType="VARCHAR" property="roleId"/>
+        <result column="user_role_note" jdbcType="VARCHAR" property="userRoleNote"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    user_role_id, user_id, role_id, user_role_note
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from static_user_role
+        where user_role_id = #{userRoleId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from static_user_role
+    where user_role_id = #{userRoleId,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" keyColumn="user_role_id" keyProperty="userRoleId"
+            parameterType="com.example.demo62.pojo.StaticUserRole" useGeneratedKeys="true">
+    insert into static_user_role (user_id, role_id, user_role_note
+      )
+    values (#{userId,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR}, #{userRoleNote,jdbcType=VARCHAR}
+      )
+  </insert>
+    <insert id="insertSelective" keyColumn="user_role_id" keyProperty="userRoleId"
+            parameterType="com.example.demo62.pojo.StaticUserRole" useGeneratedKeys="true">
+        insert into static_user_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="roleId != null">
+                role_id,
+            </if>
+            <if test="userRoleNote != null">
+                user_role_note,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="roleId != null">
+                #{roleId,jdbcType=VARCHAR},
+            </if>
+            <if test="userRoleNote != null">
+                #{userRoleNote,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.example.demo62.pojo.StaticUserRole">
+        update static_user_role
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="roleId != null">
+                role_id = #{roleId,jdbcType=VARCHAR},
+            </if>
+            <if test="userRoleNote != null">
+                user_role_note = #{userRoleNote,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where user_role_id = #{userRoleId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.example.demo62.pojo.StaticUserRole">
+    update static_user_role
+    set user_id = #{userId,jdbcType=VARCHAR},
+      role_id = #{roleId,jdbcType=VARCHAR},
+      user_role_note = #{userRoleNote,jdbcType=VARCHAR}
+    where user_role_id = #{userRoleId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,40 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo62.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.example.demo62.pojo.User">
+        <id property="id" column="user_id"/>
+        <result property="name" column="user_name"/>
+        <result property="password" column="user_password"/>
+        <result property="lastSignTime" column="last_sign_time"/>
+        <result property="signState" column="signstate"/>
+        <result property="tickeId" column="ticke_id"/>
+        <collection property="roles" select="com.example.demo62.mapper.RoleMapper.selectByUser"
+                    column="user_id"/>
+    </resultMap>
+
+    <select id="selectOne" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT *
+    FROM static_user
+    WHERE user_id = #{id}
+  </select>
+    <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT *
+    FROM static_user
+    WHERE user_name = #{name}
+  </select>
+
+    <select id="selectByRole" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT static_user.*
+    FROM static_user,
+         static_user_role
+    WHERE static_user_role.user_id = static_user.user_id
+      AND static_user_role.role_id = #{roleId}
+  </select>
+
+    <insert id="insertOne" parameterType="com.example.demo62.pojo.User">
+    INSERT INTO static_user (user_id, user_name, user_password)
+    VALUE (#{user.id}, #{user.name}, #{user.password});
+  </insert>
+
+</mapper>

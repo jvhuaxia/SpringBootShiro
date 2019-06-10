@@ -1,0 +1,38 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo62.mapper.TbProductMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.demo62.pojo.TbProduct">
+        <id column="Pid" property="id"/>
+        <result column="Pname" property="name"/>
+        <result column="Pnum" property="num"/>
+        <result column="Price" property="price"/>
+        <result column="Ptime" property="time"/>
+    </resultMap>
+
+    <insert id="insertOne" parameterType="com.example.demo62.pojo.TbProduct">
+        INSERT INTO tb_product (Pid, Pname, Pnum, Price, Ptime)VALUES(UUID(), #{tbProduct.name},#{tbProduct.num} , #{tbProduct.price},#{tbProduct.time} )
+    </insert>
+    <update id="updateById" parameterType="com.example.demo62.pojo.TbProduct">
+        UPDATE tb_product SET Pname= #{tbProduct.name}, Pnum = #{tbProduct.num} ,Price = #{tbProduct.price},Ptime =#{tbProduct.time}  WHERE Pid = #{tbProduct.id}
+    </update>
+    <delete id="delById">
+        DELETE FROM tb_product WHERE Pid = #{id}
+    </delete>
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT  * FROM tb_product
+    </select>
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT  * FROM tb_product WHERE PID = #{id}
+    </select>
+    <select id="selectByExam" resultMap="BaseResultMap">
+        SELECT * FROM tb_product WHERE Pname LIKE #{tbProductExam.name} AND Pid LIKE #{tbProductExam.id} AND Ptime LIKE #{tbProductExam.time}
+    </select>
+    <select id="selectByName" resultMap="BaseResultMap">
+        SELECT  * FROM tb_product WHERE Pname = #{name}
+    </select>
+
+
+</mapper>

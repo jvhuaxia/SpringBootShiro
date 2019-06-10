@@ -1,0 +1,33 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo62.mapper.RoleMapper">
+    <resultMap id="BaseResultMap" type="com.example.demo62.pojo.Role">
+        <id property="id" column="role_id"/>
+        <result property="name" column="role_name"/>
+        <result property="note" column="role_note"/>
+        <collection property="users" select="com.example.demo62.mapper.UserMapper.selectByRole"
+                    column="role_id"/>
+        <collection property="permissions" select="com.example.demo62.mapper.PermissionMapper.selectByRole"
+                    column="role_id"/>
+    </resultMap>
+
+    <select id="selectOne" resultMap="BaseResultMap" parameterType="int">
+    SELECT *
+    FROM static_role
+    WHERE role_id = #{id}
+  </select>
+
+    <select id="selectByUser" resultMap="BaseResultMap" parameterType="java.lang.String">
+    SELECT static_role.role_id, role_name, role_note
+    FROM static_role,
+         static_user,
+         static_user_role
+    WHERE static_role.role_id = static_user_role.role_id
+      AND static_user.user_id = static_user_role.user_id
+      AND static_user.user_id = #{userId}
+  </select>
+
+
+</mapper>
